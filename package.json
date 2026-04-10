@@ -4,15 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx src/App.ts"
+    "build:backend": "tsc -p tsconfig.json",
+    "build:frontend": "tsc -p tsconfig.frontend.json && mkdir -p dist/frontend && cp frontend/index.html dist/frontend/index.html && cp frontend/styles.css dist/frontend/styles.css",
+    "build": "npm run build:backend && npm run build:frontend",
+    "start": "node dist/App.js",
+    "dev": "tsx src/App.ts",
+    "server": "npm run build && node dist/App.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
     "typescript": "^6.0.2"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }

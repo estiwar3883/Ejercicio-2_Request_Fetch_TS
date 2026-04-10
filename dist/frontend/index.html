@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD - Gestión de Usuarios</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gestión de Usuarios</h1>
+        
+        <div class="content">
+            <!-- Formulario -->
+            <div class="card">
+                <h2>Formulario CRUD</h2>
+                
+                <div class="form-group">
+                    <label for="userId">ID (para actualizar/eliminar):</label>
+                    <input type="number" id="userId" placeholder="Ej: 1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="userName">Nombre:</label>
+                    <input type="text" id="userName" placeholder="Ej: Juan Pérez">
+                </div>
+                
+                <div class="form-group">
+                    <label for="userEmail">Email:</label>
+                    <input type="email" id="userEmail" placeholder="Ej: juan@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="userUsername">Username:</label>
+                    <input type="text" id="userUsername" placeholder="Ej: juanperez">
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="success" id="createBtn">Crear</button>
+                    <button id="updateBtn">Actualizar</button>
+                    <button class="danger" id="deleteBtn">Eliminar</button>
+                </div>
+                
+                <hr style="margin: 20px 0;">
+                
+                <div class="form-group">
+                    <label>Obtener Datos</label>
+                    <button style="width: 100%; margin-bottom: 10px;" id="getAllBtn">
+                        Ver Todos los Usuarios
+                    </button>
+                    <button style="width: 100%;" id="getOneBtn">
+                        Buscar Usuario por ID
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Lista de usuarios -->
+            <div class="card">
+                <h2>Lista de Usuarios</h2>
+                <div id="usersList" class="users-list">
+                    <p style="color: #999; text-align: center;">Cargando usuarios...</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Respuesta -->
+        <div class="card">
+            <h2>Respuesta de la API</h2>
+            <div id="response">
+                <p style="color: #999; text-align: center;">Las respuestas aparecerán aquí</p>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="app.js"></script>
+</body>
+</html>

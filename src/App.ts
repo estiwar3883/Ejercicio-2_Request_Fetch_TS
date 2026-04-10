@@ -1,60 +1,41 @@
+import express from 'express';
+import path from 'path';
 import { usuarioService } from "./service/ApiService";
-import { postService } from "./service/ApiService";
-import { characterService } from "./service/ApiService";
 
-async function pruebas() {
+const app = express();
+const PORT = 3000;
 
-  // GET ALL USERS
-    const users = await usuarioService.getAll();
+// Middleware
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'frontend')));
 
-    console.log("GET ALL USERS:");
-    if (users.error) {
-        console.error(users.error);
-    } else {
-        console.log(users.data);
-        console.log("Es array", Array.isArray(users.data)); 
-    }
-  // GET ONE USER
-    const user = await usuarioService.getOne(1);
+// Rutas API
+app.get('/api/users', async (req, res) => {
+    const result = await usuarioService.getAll();
+    res.json(result);
+});
 
-    console.log("\nGET ONE USER:");
-    if (user.error) {
-        console.error(user.error);
-    } else {
-        console.log(user.data);
-    }
+app.get('/api/users/:id', async (req, res) => {
+    const result = await usuarioService.getOne(Number(req.params.id));
+    res.json(result);
+});
 
-  //  ERROR (ID inválido)
-    const userError = await usuarioService.getOne(99999);
-    console.log("GET ONE INVALID USER:");
-    if (userError.error) {
-        console.error("Error controlado:", userError.error);
-    } else {
-        console.log(userError.data);
-    }
+app.post('/api/users', async (req, res) => {
+    const result = await usuarioService.create(req.body);
+    res.json(result);
+});
 
+app.put('/api/users/:id', async (req, res) => {
+    const result = await usuarioService.update(Number(req.params.id), req.body);
+    res.json(result);
+});
 
-  // GET ALL POSTS
+app.delete('/api/users/:id', async (req, res) => {
+    const result = await usuarioService.delete(Number(req.params.id));
+    res.json(result);
+});
 
-    const posts = await postService.getAll();
-
-    console.log("GET ALL POSTS:");
-    if (posts.error) {
-        console.error(posts.error);
-    } else {
-        console.log(posts.data?.slice(0, 2));
-    }
-
-
-  // RICK & MORTY
-    const characters = await characterService.getAll();
-
-    console.log("GET CHARACTERS:");
-    if (characters.error) {
-        console.error(characters.error);
-    } else {
-        console.log(characters.data?.results.slice(0, 2));
-    }
-}
-
-pruebas();
+app.listen(PORT, () => {
+    console.log(`🚀 Servidor ejecutándose en http://localhost:${PORT}`);
+    console.log(`📱 Abre tu navegador en http://localhost:${PORT}`);
+});

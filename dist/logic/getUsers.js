@@ -1,62 +1,60 @@
-import {ApiResponse} from "../dto/UsuarioDTO"
-
-export async function apiRequest<T>(url:string, NombreApi:string): Promise<ApiResponse<T>>{
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ApiService = void 0;
+exports.apiRequest = apiRequest;
+async function apiRequest(url, NombreApi) {
     try {
         const res = await fetch(url);
-
         if (!res.ok) {
             return {
-                NombreApi:NombreApi,
-                data:null,
+                NombreApi: NombreApi,
+                data: null,
                 error: `Error a la hora de hacer la peticion: ${res.statusText}`,
                 status: res.status
-            }
+            };
         }
-
-        const body: unknown = await res.json();
-
+        const body = await res.json();
         if (body === null || body === undefined) {
-            return{
-                NombreApi:NombreApi,
-                data:null,
+            return {
+                NombreApi: NombreApi,
+                data: null,
                 error: "Error en la petición",
                 status: res.status
             };
         }
-
         return {
-            NombreApi:NombreApi,
-            data:body as T,
-            error:null,
-            status:res.status
-        }
-    } catch (error) {
+            NombreApi: NombreApi,
+            data: body,
+            error: null,
+            status: res.status
+        };
+    }
+    catch (error) {
         //se nos cayo el internet
-        return{
-            NombreApi:NombreApi,
-            data:null,
-            error:"fallo la conexion total, compre internet",
+        return {
+            NombreApi: NombreApi,
+            data: null,
+            error: "fallo la conexion total, compre internet",
             status: 500
         };
     }
 }
-
-export class ApiService<T> {
-    constructor (private endpoint:string) {}
-
-    async getAll(): Promise<ApiResponse<T>> {
+class ApiService {
+    constructor(endpoint) {
+        this.endpoint = endpoint;
+    }
+    async getAll() {
         try {
             const res = await fetch(this.endpoint);
             const data = await res.json();
-
             return {
-            NombreApi: this.endpoint,
-            data: res.ok? data : null,
-            error: res.ok? null : "Error al obtener datos",
-            status: res.status
+                NombreApi: this.endpoint,
+                data: res.ok ? data : null,
+                error: res.ok ? null : "Error al obtener datos",
+                status: res.status
             };
-
-        }catch (error) {
+        }
+        catch (error) {
             return {
                 NombreApi: this.endpoint,
                 data: null,
@@ -65,30 +63,27 @@ export class ApiService<T> {
             };
         }
     }
-
-    async getOne(id: number): Promise<ApiResponse<T>> {
-    try {
+    async getOne(id) {
+        try {
             const res = await fetch(`${this.endpoint}/${id}`);
             const data = await res.json();
-
             return {
-            NombreApi: this.endpoint,
-            data: res.ok? data : null,
-            error: res.ok? null : "Error al obtener recurso",
-            status: res.status
+                NombreApi: this.endpoint,
+                data: res.ok ? data : null,
+                error: res.ok ? null : "Error al obtener recurso",
+                status: res.status
             };
-
-        } catch (error) {
-                return {
+        }
+        catch (error) {
+            return {
                 NombreApi: this.endpoint,
                 data: null,
                 error: "Error de red",
                 status: 500
-                };
-            }
+            };
         }
-
-    async create(body: Partial<T>): Promise<ApiResponse<T>> {
+    }
+    async create(body) {
         try {
             const res = await fetch(this.endpoint, {
                 method: 'POST',
@@ -98,14 +93,14 @@ export class ApiService<T> {
                 body: JSON.stringify(body)
             });
             const data = await res.json();
-
             return {
                 NombreApi: this.endpoint,
                 data: res.ok ? data : null,
                 error: res.ok ? null : "Error al crear recurso",
                 status: res.status
             };
-        } catch (error) {
+        }
+        catch (error) {
             return {
                 NombreApi: this.endpoint,
                 data: null,
@@ -114,8 +109,7 @@ export class ApiService<T> {
             };
         }
     }
-
-    async update(id: number, body: Partial<T>): Promise<ApiResponse<T>> {
+    async update(id, body) {
         try {
             const res = await fetch(`${this.endpoint}/${id}`, {
                 method: 'PUT',
@@ -125,14 +119,14 @@ export class ApiService<T> {
                 body: JSON.stringify(body)
             });
             const data = await res.json();
-
             return {
                 NombreApi: this.endpoint,
                 data: res.ok ? data : null,
                 error: res.ok ? null : "Error al actualizar recurso",
                 status: res.status
             };
-        } catch (error) {
+        }
+        catch (error) {
             return {
                 NombreApi: this.endpoint,
                 data: null,
@@ -141,21 +135,20 @@ export class ApiService<T> {
             };
         }
     }
-
-    async delete(id: number): Promise<ApiResponse<T>> {
+    async delete(id) {
         try {
             const res = await fetch(`${this.endpoint}/${id}`, {
                 method: 'DELETE'
             });
             const data = await res.json();
-
             return {
                 NombreApi: this.endpoint,
                 data: res.ok ? data : null,
                 error: res.ok ? null : "Error al eliminar recurso",
                 status: res.status
             };
-        } catch (error) {
+        }
+        catch (error) {
             return {
                 NombreApi: this.endpoint,
                 data: null,
@@ -164,4 +157,5 @@ export class ApiService<T> {
             };
         }
     }
-    }
+}
+exports.ApiService = ApiService;
